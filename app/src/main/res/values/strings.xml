@@ -7,4 +7,6 @@
     <string name="tv_esqueceu_senha_login">Esqueceu sua senha?</string>
     <string name="toast_preencher_todos_campos">Você deve preencher todos os campos.</string>
     <string name="toast_falha_autenticacao">Falha na autenticação.</string>
+    <string name="msg_invalido">Inválido</string>
+    <string name="snack_problem_autenticacao">Problemas na autenticação.</string>
 </resources>
