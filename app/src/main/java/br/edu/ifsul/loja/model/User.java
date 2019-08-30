@@ -3,7 +3,9 @@ package br.edu.ifsul.loja.model;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.Exclude;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private Long codigoDeBarras;
     private String nome;

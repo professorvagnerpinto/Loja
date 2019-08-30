@@ -10,13 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,7 +26,7 @@ import br.edu.ifsul.loja.setup.AppSetup;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String TAG = "mainActivity";
+    private static final String TAG = "loginActivity";
     private EditText etEmail, etSenha;
     private FirebaseAuth mAuth;
 
@@ -69,7 +67,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String email = etEmail.getText().toString();
-                String senha = etSenha.getText().toString();
                 if(!email.isEmpty()){
                     resetarSenha(email);
                 }else{
@@ -100,10 +97,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setUserSessao() {
         FirebaseDatabase.getInstance().getReference()
-                .child("vendas").child("users").child("1")
+                .child("vendas").child("users").child(mAuth.getCurrentUser().getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Log.d(TAG, "dataSnapshot=" + dataSnapshot + " id user = " + mAuth.getCurrentUser().getUid());
                 AppSetup.user = dataSnapshot.getValue(User.class);
                 AppSetup.user.setFirebaseUser(mAuth.getCurrentUser());
                 startActivity(new Intent(LoginActivity.this, ProdutosActivity.class));
