@@ -118,10 +118,10 @@ public class LoginActivity extends AppCompatActivity {
     private void resetarSenha(final String email) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         //add the title and text
-        builder.setTitle("Atenção");
-        builder.setMessage("Um email de recuperação de senha será enviado para: " + email);
+        builder.setTitle(getString(R.string.alert_title_atencao));
+        builder.setMessage(getString(R.string.alert_message_email_recover)+ email);
         //add the buttons
-        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.alert_sim), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mAuth.sendPasswordResetEmail(email)
@@ -130,15 +130,16 @@ public class LoginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Log.d(TAG, "Email sent.");
+                                    Snackbar.make(findViewById(R.id.R_id_container_activity_login), getString(R.string.snack_email_enviado) + email, Snackbar.LENGTH_LONG).show();
                                 }
                             }
                         });
 
             }});
-        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.alert_nao), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Snackbar.make(findViewById(R.id.R_id_container_activity_login), "Operação cancelada.", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.R_id_container_activity_login), getString(R.string.snack_operacao_cancelada), Snackbar.LENGTH_LONG).show();
                 }
             });
 

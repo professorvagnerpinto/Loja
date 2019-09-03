@@ -1,11 +1,8 @@
 package br.edu.ifsul.loja.model;
 
-import com.google.firebase.database.Exclude;
-
 import java.io.Serializable;
 
 public class Produto implements Serializable{
-    private String key;
     private Long codigoDeBarras;
     private String nome;
     private String descricao;
@@ -13,17 +10,8 @@ public class Produto implements Serializable{
     private Integer quantidade;
     private boolean situacao;
     private String url_foto = "";
-    private Integer index_produto;  //atributo apenas local (as anotações "exclude no get e no set determina isso)
 
     public Produto() {
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 
     public Long getCodigoDeBarras() {
@@ -82,28 +70,17 @@ public class Produto implements Serializable{
         this.url_foto = url_foto;
     }
 
-    @Exclude
-    public Integer getIndex_produto() {
-        return index_produto;
-    }
-
-    @Exclude
-    public void setIndex_produto(Integer index_produto) {
-        this.index_produto = index_produto;
-    }
-
     @Override
     public String toString() {
         return "Produto{" +
-                "key='" + key + '\'' +
-                ", codigoDeBarras=" + codigoDeBarras +
+                "codigoDeBarras=" + codigoDeBarras +
                 ", nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", valor=" + valor +
                 ", quantidade=" + quantidade +
                 ", situacao=" + situacao +
                 ", url_foto='" + url_foto + '\'' +
-                ", index_produto=" + index_produto +
                 '}';
     }
+
 }
