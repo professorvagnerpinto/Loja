@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import br.edu.ifsul.loja.R;
@@ -40,6 +41,13 @@ public class ProdutosAdapter extends ArrayAdapter<Produto> {
 
         Produto produto = getItem(position);
         holder.tvNome.setText(produto.getNome());
+        holder.tvEstoque.setText(produto.getQuantidade().toString());
+        holder.tvValor.setText(NumberFormat.getCurrencyInstance().format(produto.getValor()));
+        if(produto.getUrl_foto().equals("")){
+            holder.pbFotoDoProduto.setVisibility(View.INVISIBLE);
+        }else{
+            //faz o downlod da foto aqui, usando API do serviço Storage
+        }
 
         return convertView;
     }
