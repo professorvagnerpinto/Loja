@@ -49,7 +49,7 @@ public class ProdutosActivity extends AppCompatActivity {
                 }
 
                 //faz o bindView
-                lvProdutos.setAdapter(new ProdutosAdapter(this, listProdutos));
+                lvProdutos.setAdapter(new ProdutosAdapter(ProdutosActivity.this, listProdutos));
             }
 
             @Override

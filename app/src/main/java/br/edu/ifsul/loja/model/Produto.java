@@ -1,5 +1,7 @@
 package br.edu.ifsul.loja.model;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.Serializable;
 
 public class Produto implements Serializable{
@@ -10,6 +12,8 @@ public class Produto implements Serializable{
     private Integer quantidade;
     private boolean situacao;
     private String url_foto = "";
+    private String key;
+    private Integer index;
 
     public Produto() {
     }
@@ -70,6 +74,26 @@ public class Produto implements Serializable{
         this.url_foto = url_foto;
     }
 
+    @Exclude
+    public String getKey() {
+        return key;
+    }
+
+    @Exclude
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    @Exclude
+    public Integer getIndex() {
+        return index;
+    }
+
+    @Exclude
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
+
     @Override
     public String toString() {
         return "Produto{" +
@@ -80,7 +104,8 @@ public class Produto implements Serializable{
                 ", quantidade=" + quantidade +
                 ", situacao=" + situacao +
                 ", url_foto='" + url_foto + '\'' +
+                ", key='" + key + '\'' +
+                ", index=" + index +
                 '}';
     }
-
 }
