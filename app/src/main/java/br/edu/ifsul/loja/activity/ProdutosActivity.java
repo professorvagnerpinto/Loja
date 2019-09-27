@@ -39,7 +39,7 @@ public class ProdutosActivity extends AppCompatActivity {
         lvProdutos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent();
+                Intent intent = new Intent(ProdutosActivity.this, ProdutoDetalheActivity.class);
                 intent.putExtra("position", position);
                 startActivity(intent);
             }

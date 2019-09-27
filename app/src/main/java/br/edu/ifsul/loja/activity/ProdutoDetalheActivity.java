@@ -9,13 +9,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.NumberFormat;
+
 import br.edu.ifsul.loja.R;
 import br.edu.ifsul.loja.model.Produto;
 import br.edu.ifsul.loja.setup.AppSetup;
 
 public class ProdutoDetalheActivity extends AppCompatActivity {
 
-    private  TextView tvNome, tvValor, tvEstoque, tvDescricao;
+    private  TextView tvNome, tvValor, tvEstoque, tvDescricao, tvVendedor;
     private ImageView imvFoto;
     private ProgressBar pbFoto;
     private EditText etQuantidade;
@@ -37,7 +39,9 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
         tvEstoque = findViewById(R.id.tvQuantidadeProduto);
         tvDescricao = findViewById(R.id.tvDerscricaoProduto);
         etQuantidade = findViewById(R.id.etQuantidade);
+        tvVendedor = findViewById(R.id.tvVendedor);
 
+        //trata evento onClick do botão
         findViewById(R.id.btComprarProduto).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,8 +49,17 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
             }
         });
 
-
         //bind nos componentes da view
         tvNome.setText(produto.getNome());
+        tvValor.setText(NumberFormat.getCurrencyInstance().format(produto.getValor()));
+        tvEstoque.setText(produto.getQuantidade().toString());
+        tvDescricao.setText(produto.getDescricao());
+        //ativar quando tiver a navegabilidade definida
+        //tvVendedor.setText(AppSetup.user.getEmail());
+        if(produto.getUrl_foto().equals("")){
+            pbFoto.setVisibility(View.INVISIBLE);
+        }else{
+            //carrega a foto aqui
+        }
     }
 }
