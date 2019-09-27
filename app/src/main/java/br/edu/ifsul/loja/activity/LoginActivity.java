@@ -2,8 +2,10 @@ package br.edu.ifsul.loja.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +21,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 import br.edu.ifsul.loja.R;
 import br.edu.ifsul.loja.model.User;
@@ -57,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                     if(senha.isEmpty()){
                         etSenha.setError(getString(R.string.msg_invalido));
                     }
-                    Snackbar.make(findViewById(R.id.R_id_container_activity_login), getString(R.string.toast_preencher_todos_campos), Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.container_activity_login), getString(R.string.toast_preencher_todos_campos), Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -71,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                     resetarSenha(email);
                 }else{
                     etEmail.setError(getString(R.string.msg_invalido));
-                    Snackbar.make(findViewById(R.id.R_id_container_activity_login), getString(R.string.toast_preencher_todos_campos), Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.container_activity_login), getString(R.string.toast_preencher_todos_campos), Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -80,16 +84,28 @@ public class LoginActivity extends AppCompatActivity {
     private void signIn(String email, String senha) {
         mAuth.signInWithEmailAndPassword(email, senha)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            setUserSessao();
+                            // Sign in success
+                            if(mAuth.getCurrentUser().isEmailVerified()){
+                                Log.d(TAG, "signInWithEmail:success");
+                                setUserSessao();
+                            }else{
+                                Snackbar.make(findViewById(R.id.container_activity_login), "Valide seu email para o singin.", Snackbar.LENGTH_LONG).show();
+                            }
+
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Snackbar.make(findViewById(R.id.R_id_container_activity_login), getString(R.string.toast_falha_autenticacao), Snackbar.LENGTH_LONG).show();
+                            Log.w(TAG, "signInWithEmail:failure ",  task.getException());
+                            if(Objects.requireNonNull(task.getException()).getMessage().contains("password")){
+                                Snackbar.make(findViewById(R.id.container_activity_login), R.string.password_fail, Snackbar.LENGTH_LONG).show();
+                                etSenha.setError(getString(R.string.input_error_invalido));
+                            }else{
+                                Snackbar.make(findViewById(R.id.container_activity_login), R.string.email_fail, Snackbar.LENGTH_LONG).show();
+                                etEmail.setError(getString(R.string.input_error_invalido));
+                            }
                         }
                     }
                 });
@@ -110,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Snackbar.make(findViewById(R.id.R_id_container_activity_login), getString(R.string.snack_problem_autenticacao), Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.container_activity_login), getString(R.string.snack_problem_autenticacao), Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -130,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Log.d(TAG, "Email sent.");
-                                    Snackbar.make(findViewById(R.id.R_id_container_activity_login), getString(R.string.snack_email_enviado) + email, Snackbar.LENGTH_LONG).show();
+                                    Snackbar.make(findViewById(R.id.container_activity_login), getString(R.string.snack_email_enviado) + email, Snackbar.LENGTH_LONG).show();
                                 }
                             }
                         });
@@ -139,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
         builder.setNegativeButton(getString(R.string.alert_nao), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Snackbar.make(findViewById(R.id.R_id_container_activity_login), getString(R.string.snack_operacao_cancelada), Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.container_activity_login), getString(R.string.snack_operacao_cancelada), Snackbar.LENGTH_LONG).show();
                 }
             });
 

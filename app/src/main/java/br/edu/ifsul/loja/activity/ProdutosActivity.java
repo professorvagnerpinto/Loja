@@ -1,9 +1,12 @@
 package br.edu.ifsul.loja.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -18,6 +21,7 @@ import java.util.List;
 import br.edu.ifsul.loja.R;
 import br.edu.ifsul.loja.adapter.ProdutosAdapter;
 import br.edu.ifsul.loja.model.Produto;
+import br.edu.ifsul.loja.setup.AppSetup;
 
 public class ProdutosActivity extends AppCompatActivity {
 
@@ -32,6 +36,15 @@ public class ProdutosActivity extends AppCompatActivity {
         //mapeia o componente da view
         lvProdutos = findViewById(R.id.lv_produtos);
 
+        lvProdutos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent();
+                intent.putExtra("position", position);
+                startActivity(intent);
+            }
+        });
+
         //buscar os dados no RealTimeDataBase
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("vendas/produtos");
@@ -39,17 +52,17 @@ public class ProdutosActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "dataSnapshot=" + dataSnapshot);
-                List<Produto> listProdutos = new ArrayList<>();
+                AppSetup.listProdutos = new ArrayList<>();
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
                     Log.d(TAG, "dataSnapshot=" + ds);
                     Produto produto = ds.getValue(Produto.class);
                     produto.setKey(ds.getKey());
-                    produto.setIndex(listProdutos.size());
-                    listProdutos.add(produto);
+                    produto.setIndex(AppSetup.listProdutos.size());
+                    AppSetup.listProdutos.add(produto);
                 }
 
                 //faz o bindView
-                lvProdutos.setAdapter(new ProdutosAdapter(ProdutosActivity.this, listProdutos));
+                lvProdutos.setAdapter(new ProdutosAdapter(ProdutosActivity.this, AppSetup.listProdutos));
             }
 
             @Override

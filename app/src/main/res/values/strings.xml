@@ -19,4 +19,7 @@
     <string name="hint_nome_produto">Nome do produto</string>
     <string name="contentDescription_nome_produto">foto do produto</string>
     <string name="hint_valor_produto">R$ 00,00</string>
+    <string name="password_fail">Senha inválida</string>
+    <string name="email_fail">Email inválido</string>
+    <string name="input_error_invalido">Inválido</string>
 </resources>

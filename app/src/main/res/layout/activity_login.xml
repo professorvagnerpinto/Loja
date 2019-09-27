@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.LoginActivity"
-    android:id="@+id/R.id.container_activity_login">
+    android:id="@+id/container_activity_login">
 
     <ImageView
         android:id="@+id/imageView2"
