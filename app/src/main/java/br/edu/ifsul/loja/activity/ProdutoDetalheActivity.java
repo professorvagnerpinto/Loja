@@ -1,7 +1,11 @@
 package br.edu.ifsul.loja.activity;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -9,18 +13,28 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.text.NumberFormat;
 
 import br.edu.ifsul.loja.R;
+import br.edu.ifsul.loja.model.Cliente;
+import br.edu.ifsul.loja.model.ItemPedido;
 import br.edu.ifsul.loja.model.Produto;
 import br.edu.ifsul.loja.setup.AppSetup;
 
 public class ProdutoDetalheActivity extends AppCompatActivity {
 
-    private  TextView tvNome, tvValor, tvEstoque, tvDescricao, tvVendedor;
+    private static final String TAG = "produtoDetalheActivity";
+    private TextView tvNome, tvValor, tvEstoque, tvDescricao, tvVendedor;
     private ImageView imvFoto;
     private ProgressBar pbFoto;
     private EditText etQuantidade;
+    private Produto produto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +43,7 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
 
         //obtém o position do objeto produto a a partir da intent
         int position = getIntent().getExtras().getInt("position");
-        Produto produto = AppSetup.listProdutos.get(position);
+        produto = AppSetup.listProdutos.get(position);
 
         //mapeia os componentes da view
         tvNome = findViewById(R.id.tvNomeProduto);
@@ -45,7 +59,37 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
         findViewById(R.id.btComprarProduto).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ProdutoDetalheActivity.this, "Ok", Toast.LENGTH_SHORT).show();
+                //objeto cliente provisório
+                AppSetup.cliente = new Cliente();
+                AppSetup.cliente.setCodigoDeBarras(1L);
+                AppSetup.cliente.setNome("Ana");
+                AppSetup.cliente.setSobrenome("Silva");
+                //realiza a venda
+                if(AppSetup.cliente == null){
+                    //busca aqui o cliente na lista de clientes
+                }else{
+                    if(!etQuantidade.getText().toString().isEmpty()){
+                        if(Integer.parseInt(etQuantidade.getText().toString()) > produto.getQuantidade()
+                                || Integer.parseInt(etQuantidade.getText().toString()) <= 0){
+                            Snackbar.make(findViewById(R.id.container_activity_detalhe_produto),
+                                    R.string.snack_qde_insuficiente,
+                                    Snackbar.LENGTH_LONG).show();
+                        }else{
+                            //faz a venda
+                            ItemPedido item = new ItemPedido(produto);
+                            item.setQuantidade(Integer.parseInt(etQuantidade.getText().toString()));
+                            item.setTotalItem(Integer.parseInt(etQuantidade.getText().toString()) * produto.getValor());
+                            item.setSituacao(true);
+                            AppSetup.carrinho.add(item);
+                            //vai para o carrinho
+                            startActivity(new Intent(ProdutoDetalheActivity.this, CarrinhoActivity.class));
+                        }
+                    }else{
+                        Snackbar.make(findViewById(R.id.container_activity_detalhe_produto),
+                                R.string.snack_insira_quantidade,
+                                Snackbar.LENGTH_LONG).show();
+                    }
+                }
             }
         });
 
@@ -61,5 +105,21 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
         }else{
             //carrega a foto aqui
         }
+
+        //escuta o banco para atualizar estoque na view
+        FirebaseDatabase.getInstance().getReference().child("vendas/produtos/" + produto.getKey() + "/quantidade")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String url = "vendas/produtos/" + produto.getKey() + "/quantidade";
+                        Log.d(TAG, "atualizou estoque ; url=" + url);
+                        tvEstoque.setText(dataSnapshot.getValue(Integer.class).toString());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 }

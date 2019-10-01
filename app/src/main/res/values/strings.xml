@@ -22,4 +22,6 @@
     <string name="password_fail">Senha inválida</string>
     <string name="email_fail">Email inválido</string>
     <string name="input_error_invalido">Inválido</string>
+    <string name="snack_insira_quantidade">Insira a quantidade</string>
+    <string name="snack_qde_insuficiente">Estoque insuficiente</string>
 </resources>
