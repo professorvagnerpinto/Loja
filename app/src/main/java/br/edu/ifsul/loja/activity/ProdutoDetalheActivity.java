@@ -55,6 +55,9 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
         etQuantidade = findViewById(R.id.etQuantidade);
         tvVendedor = findViewById(R.id.tvVendedor);
 
+        //obtém a instância do banco de dados
+        final DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("vendas/produtos/" + produto.getKey() + "/quantidade");
+
         //trata evento onClick do botão
         findViewById(R.id.btComprarProduto).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +84,8 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
                             item.setTotalItem(Integer.parseInt(etQuantidade.getText().toString()) * produto.getValor());
                             item.setSituacao(true);
                             AppSetup.carrinho.add(item);
+                            //baixa do estoque
+                            myRef.setValue(produto.getQuantidade() - Integer.parseInt(etQuantidade.getText().toString()));
                             //vai para o carrinho
                             startActivity(new Intent(ProdutoDetalheActivity.this, CarrinhoActivity.class));
                         }
@@ -107,12 +112,10 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
         }
 
         //escuta o banco para atualizar estoque na view
-        FirebaseDatabase.getInstance().getReference().child("vendas/produtos/" + produto.getKey() + "/quantidade")
-                .addValueEventListener(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String url = "vendas/produtos/" + produto.getKey() + "/quantidade";
-                        Log.d(TAG, "atualizou estoque ; url=" + url);
                         tvEstoque.setText(dataSnapshot.getValue(Integer.class).toString());
                     }
 
