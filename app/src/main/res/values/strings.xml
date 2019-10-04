@@ -24,4 +24,15 @@
     <string name="input_error_invalido">Inválido</string>
     <string name="snack_insira_quantidade">Insira a quantidade</string>
     <string name="snack_qde_insuficiente">Estoque insuficiente</string>
+    <string name="titulo_cliente_selecionado">Confirmar esta seleção?</string>
+    <string name="hint_nome">Nome</string>
+    <string name="toast_cliente_selecionado">Cliente selecionado.</string>
+    <string name="hint_dados_basicos_do_cliente">Dados básicos do cliente</string>
+    <string name="hint_nome_do_cliente">Nome do cliente</string>
+    <string name="content_description_foto_do_cliente">foto do cliente</string>
+    <string name="menu_vender">Vender</string>
+    <string name="menu_cancelar">Cancelar</string>
+    <string name="total_pedido_carrinho">Total Pedido = R$ 0,00</string>
+    <string name="nome_do_cliente_carrinho">Nome Cliente</string>
+    <string name="hint_quantidade">000</string>
 </resources>

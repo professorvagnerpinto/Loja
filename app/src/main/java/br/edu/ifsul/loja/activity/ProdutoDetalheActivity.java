@@ -62,14 +62,9 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
         findViewById(R.id.btComprarProduto).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //objeto cliente provisório
-                AppSetup.cliente = new Cliente();
-                AppSetup.cliente.setCodigoDeBarras(1L);
-                AppSetup.cliente.setNome("Ana");
-                AppSetup.cliente.setSobrenome("Silva");
                 //realiza a venda
                 if(AppSetup.cliente == null){
-                    //busca aqui o cliente na lista de clientes
+                    startActivity(new Intent(ProdutoDetalheActivity.this, ClientesActivity.class));
                 }else{
                     if(!etQuantidade.getText().toString().isEmpty()){
                         if(Integer.parseInt(etQuantidade.getText().toString()) > produto.getQuantidade()
@@ -88,6 +83,7 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
                             myRef.setValue(produto.getQuantidade() - Integer.parseInt(etQuantidade.getText().toString()));
                             //vai para o carrinho
                             startActivity(new Intent(ProdutoDetalheActivity.this, CarrinhoActivity.class));
+                            finish();
                         }
                     }else{
                         Snackbar.make(findViewById(R.id.container_activity_detalhe_produto),
@@ -116,6 +112,7 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String url = "vendas/produtos/" + produto.getKey() + "/quantidade";
+                        Log.d(TAG, "url=" + url);
                         tvEstoque.setText(dataSnapshot.getValue(Integer.class).toString());
                     }
 
