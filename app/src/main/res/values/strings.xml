@@ -35,4 +35,7 @@
     <string name="total_pedido_carrinho">Total Pedido = R$ 0,00</string>
     <string name="nome_do_cliente_carrinho">Nome Cliente</string>
     <string name="hint_quantidade">000</string>
+    <string name="menu_pesquisar">pesquisar</string>
+    <string name="menu_lercodigodebarras">Ler código de barras</string>
+    <string name="text_nome">nome</string>
 </resources>

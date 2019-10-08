@@ -44,13 +44,13 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     //inflar menu
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activity_carrinho, menu);
         return true; //chamada do método termina aqui
     }
 
+    //tratar eventos do menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -63,8 +63,6 @@ public class CarrinhoActivity extends AppCompatActivity {
         }
         return true; //chamada do método termina aqui
     }
-
-    //tratar eventos do menu
 
 
     //excluir um item
