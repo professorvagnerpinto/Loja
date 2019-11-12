@@ -63,6 +63,11 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //personaliza o menu da navigationview de acordo com o perfil do usuário logado na sessão
+        if(AppSetup.user.getFuncao().equals("admin")){
+            navigationView.getMenu().findItem(R.id.nav_group_admin).setVisible(true);
+        }
+
         //mapeia o componente da view
         lvProdutos = findViewById(R.id.lv_produtos);
 

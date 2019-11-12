@@ -24,6 +24,9 @@ public class CarrinhoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_carrinho);
         Log.d(TAG, "Carrinho=" + AppSetup.carrinho);
 
+        //ativa o botão home na actionbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         //tratamento de eventos
         lvCarrinho = findViewById(R.id.lv_carrinho);
 
