@@ -43,6 +43,12 @@ public class CarrinhoActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     //inflar menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -56,9 +62,13 @@ public class CarrinhoActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.menuitem_salvar_pedido:
                 Toast.makeText(this, "Salvar", Toast.LENGTH_SHORT).show();
+                finish();
                 break;
             case R.id.menuitem_cancelar_pedido:
                 Toast.makeText(this, "Cancelar", Toast.LENGTH_SHORT).show();
+                break;
+            case android.R.id.home:
+                finish();
                 break;
         }
         return true; //chamada do método termina aqui

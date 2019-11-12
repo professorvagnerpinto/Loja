@@ -1,10 +1,16 @@
 package br.edu.ifsul.loja.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,10 +34,11 @@ import java.util.List;
 import br.edu.ifsul.loja.R;
 import br.edu.ifsul.loja.adapter.ProdutosAdapter;
 import br.edu.ifsul.loja.barcode.BarcodeCaptureActivity;
+import br.edu.ifsul.loja.model.Cliente;
 import br.edu.ifsul.loja.model.Produto;
 import br.edu.ifsul.loja.setup.AppSetup;
 
-public class ProdutosActivity extends AppCompatActivity {
+public class ProdutosActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final String TAG = "produtosActivity";
     private ListView lvProdutos;
@@ -41,7 +48,20 @@ public class ProdutosActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_produtos);
+        setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //a navegação de alto nível
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         //mapeia o componente da view
         lvProdutos = findViewById(R.id.lv_produtos);
@@ -88,6 +108,32 @@ public class ProdutosActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(!AppSetup.carrinho.isEmpty()){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            //adiciona um título e uma mensagem
+            builder.setTitle(getString(R.string.title_modal_atencao));
+            builder.setMessage(getString(R.string.message_modal_sair));
+            //adiciona os botões
+            builder.setPositiveButton(R.string.alert_sim, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            builder.setNegativeButton(R.string.alert_nao, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Snackbar.make(findViewById(R.id.container_activity_clientes), getString(R.string.snack_operacao_cancelada), Snackbar.LENGTH_LONG).show();
+                }
+            });
+
+            builder.show();
+        }
     }
 
     @Override
@@ -168,5 +214,17 @@ public class ProdutosActivity extends AppCompatActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        switch (menuItem.getItemId()){
+            case R.id.nav_home:
+                Toast.makeText(this, "Clicou no navhome", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        return true;
     }
 }
