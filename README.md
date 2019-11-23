@@ -1,0 +1,3 @@
+# Loja
+Este projeto é desenvolvido na disciplina de PDM, do curso de Tecnologia em Sistema para Internet, IFSul, campus Pelotas (RS - Brasil). O intuito é que ele sirva de fonte de inspiração para os alunos desenvolver, durante o semestre letivo,seu próprio aplicativo em API nativa (Java) do Android, com os serviços do Firebase como backend. É exigida a entrega em três módulos, bem como, alguns desafios, como, a realização de sing up (Authentication), validação de email, e ativação e tratamento do serviço de mensagens push (Cloud Messaging).
+A construção de apps com API nativa está descontinuada. A partir de 2020/1 os projetos serão desenvolvidos em React Native.
