@@ -225,7 +225,7 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
 
         switch (menuItem.getItemId()){
             case R.id.nav_clientes:
-                Toast.makeText(this, "Clicou no item clientes na NavigationView", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(ProdutosActivity.this, ClientesActivity.class));
                 break;
         }
 
