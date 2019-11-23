@@ -34,7 +34,6 @@ import java.util.List;
 import br.edu.ifsul.loja.R;
 import br.edu.ifsul.loja.adapter.ProdutosAdapter;
 import br.edu.ifsul.loja.barcode.BarcodeCaptureActivity;
-import br.edu.ifsul.loja.model.Cliente;
 import br.edu.ifsul.loja.model.Produto;
 import br.edu.ifsul.loja.setup.AppSetup;
 
@@ -225,8 +224,8 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
         switch (menuItem.getItemId()){
-            case R.id.nav_home:
-                Toast.makeText(this, "Clicou no navhome", Toast.LENGTH_SHORT).show();
+            case R.id.nav_clientes:
+                Toast.makeText(this, "Clicou no item clientes na NavigationView", Toast.LENGTH_SHORT).show();
                 break;
         }
 
